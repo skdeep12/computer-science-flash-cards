@@ -6,7 +6,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 app = Flask(__name__)
 app.config.from_object(__name__)
 nameDB='cards.db'
-pathDB='db'
+pathDB='./db'
 
 def load_config():
     app.config.update(dict(
@@ -181,7 +181,7 @@ def memorize(card_type, card_id=None):
     if card_id:
         card = get_card_by_id(card_id)
     else:
-        card = get_card(card_type)
+        card = get_random_card(card_type)
     if not card:
         flash("You've learned all the '" + tag[1] + "' cards.")
         return redirect(url_for('show'))
@@ -217,7 +217,7 @@ def memorize_known(card_type, card_id=None):
                            short_answer=short_answer, tags=tags)
 
 
-def get_card(type):
+def get_random_card(type):
     db = get_db()
 
     query = '''
